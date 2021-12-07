@@ -5,7 +5,7 @@
         <h1>Crear Producto</h1>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <select class="form-select" name="subcategoria" id="subcategoria">
+            <select class="form-select" name="subcategoria" id="subcategoria" required>
                 {% if subcategorias.error %}
                     <option disabled selected>{{subcategorias.nombre}}</option>
                 {% else %}

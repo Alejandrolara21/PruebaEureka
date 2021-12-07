@@ -10,6 +10,8 @@ from apps.categorias.models import Categoria
 from apps.subcategorias.models import Subcategoria
 from apps.productos.models import Producto
 
+from django.utils.datastructures import MultiValueDictKeyError
+
 @login_required
 def inicio_view(request):
     return render(request,'CRUD/index.html')
@@ -18,25 +20,29 @@ def inicio_view(request):
 def crear_view(request):
     data={}
 
-    if request.method == 'POST':
-        nombre = request.POST['nombre']
-        errores = []
-
-        if(len(nombre)> 100):
-            errores.append("Nombre demasiado largo")
-
-        if(len(errores) > 0):
-            data={
-                'nombre':nombre,
-                'error': errores
-            }
-            return render(request,'CRUD/categoria/crear-categoria.html',data)
-        
+    if request.method == 'POST':        
         try:
+            nombre = request.POST['nombre']
+            errores = []
+
+            if(len(nombre)> 100):
+                errores.append("Nombre demasiado largo")
+
+            if(len(errores) > 0):
+                data={
+                    'nombre':nombre,
+                    'error': errores
+                }
+                return render(request,'CRUD/categoria/crear-categoria.html',data)
+            
             categoria = Categoria()
             categoria.nombre = nombre
             categoria.save()
             return redirect('listado_categoria')
+        except MultiValueDictKeyError:
+            data={
+                'errorDB': "Todos los campos son obligatorios"
+            }
         except:
             data={
                 'errorDB': "Error en la base de datos"
@@ -69,29 +75,27 @@ def editar_view(request,pk):
         }
 
     if request.method == 'POST':
-        nombre = request.POST['nombre']
-        errores = []
+        try:
+            nombre = request.POST['nombre']
+            errores = []
 
-        if(len(nombre)> 100):
-            errores.append("Nombre demasiado largo")
+            if(len(nombre)> 100):
+                errores.append("Nombre demasiado largo")
 
-        if(len(errores) > 0):
-            try:
+            if(len(errores) > 0):
                 data={
                     'categoria':Categoria.objects.get(pk=pk),
                     'error': errores
                 }
-            except:
-                data={
-                    'errorDB': "Error en la base de datos"
-                }
-            return render(request,'CRUD/categoria/editar-categoria.html',data)
-
-        try:
+                return render(request,'CRUD/categoria/editar-categoria.html',data)
             categoria = Categoria.objects.get(pk=pk)
             categoria.nombre = nombre
             categoria.save()
             return redirect('listado_categoria')
+        except MultiValueDictKeyError:
+            data={
+                'errorDB': "Todos los campos son obligatorios"
+            }
         except:
             data={
                 'errorDB': "Error en la base de datos"
@@ -101,7 +105,6 @@ def editar_view(request,pk):
 
 @login_required
 def eliminar_view(request,pk):
-
     try:
         categoria = Categoria.objects.get(pk=pk)
         subcategorias = Subcategoria.objects.filter(categoria=categoria)

@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
+
+
 import os
 from django.http import HttpResponse
 import json
@@ -9,6 +11,8 @@ import json
 
 from apps.productos.models import Producto
 from apps.subcategorias.models import Subcategoria
+
+from django.utils.datastructures import MultiValueDictKeyError
 
 @login_required
 def crear_view(request):
@@ -26,32 +30,31 @@ def crear_view(request):
         }
 
     if request.method == 'POST':
-        nombre = request.POST['nombre']
-        descripcion = request.POST['descr']
-        precio = request.POST['precio']
-        cantidad = request.POST['cantidad']
-        idSubcategoria = request.POST['subcategoria']
-
-        errores = []
-
-        if(len(nombre)> 100):
-            errores.append("Nombre demasiado largo")
-
-        if(len(precio) > 10):
-            errores.append("Numero no valido")
-
-        if(len(errores) > 0):
-            data={
-                'nombre':nombre,
-                'descripcion':descripcion,
-                'precio':precio,
-                'cantidad':cantidad,
-                'subcategorias':subcategorias,
-                'error': errores
-            }
-            return render(request,'CRUD/productos/crear-producto.html',data)
-
         try:
+            nombre = request.POST['nombre']
+            descripcion = request.POST['descr']
+            precio = request.POST['precio']
+            cantidad = request.POST['cantidad']
+            idSubcategoria = request.POST['subcategoria']
+
+            errores = []
+
+            if(len(nombre)> 100):
+                errores.append("Nombre demasiado largo")
+
+            if(len(precio) > 10):
+                errores.append("Numero no valido")
+
+            if(len(errores) > 0):
+                data={
+                    'nombre':nombre,
+                    'descripcion':descripcion,
+                    'precio':precio,
+                    'cantidad':cantidad,
+                    'subcategorias':subcategorias,
+                    'error': errores
+                }
+                return render(request,'CRUD/productos/crear-producto.html',data)
             producto = Producto()
             subcategoria = Subcategoria.objects.get(pk=idSubcategoria)
             producto.nombre = nombre
@@ -66,6 +69,10 @@ def crear_view(request):
             producto.save()
 
             return redirect('listado_producto')
+        except MultiValueDictKeyError:
+            data={
+                'errorDB': "Todos los campos son obligatorios"
+            }
         except:
             data={
                 'errorDB': "Error en la base de datos"
@@ -105,35 +112,30 @@ def editar_view(request,pk):
         }
 
     if request.method == 'POST':
-        nombre = request.POST['nombre']
-        descripcion = request.POST['descr']
-        precio = request.POST['precio']
-        cantidad = request.POST['cantidad']
-        idSubcategoria = request.POST['subcategoria']
+        try:
+            nombre = request.POST['nombre']
+            descripcion = request.POST['descr']
+            precio = request.POST['precio']
+            cantidad = request.POST['cantidad']
+            idSubcategoria = request.POST['subcategoria']
 
-        errores = []
+            errores = []
 
-        if(len(nombre)> 100):
-            errores.append("Nombre demasiado largo")
+            if(len(nombre)> 100):
+                errores.append("Nombre demasiado largo")
 
-        if(len(precio) > 10):
-            errores.append("Numero no valido")
+            if(len(precio) > 10):
+                errores.append("Numero no valido")
 
-        if(len(errores) > 0):
-            try:
+            if(len(errores) > 0):
                 producto = Producto.objects.get(pk=pk)
                 data={
                     'producto':producto,
                     'subcategorias':subcategorias,
                     'error': errores
                 }
-            except:
-                data={
-                    'errorDB': "Error en la base de datos"
-                }
-            return render(request,'CRUD/productos/editar-producto.html',data)
-
-        try:
+                return render(request,'CRUD/productos/editar-producto.html',data)
+            
             producto = Producto.objects.get(pk=pk)
             subcategoria = Subcategoria.objects.get(pk=idSubcategoria)
             if(request.FILES):
@@ -151,6 +153,10 @@ def editar_view(request,pk):
             producto.subcategoria = subcategoria
             producto.save()
             return redirect('listado_producto')
+        except MultiValueDictKeyError:
+            data={
+                'errorDB': "Todos los campos son obligatorios"
+            }
         except:
             data={
                 'errorDB': "Error en la base de datos"
