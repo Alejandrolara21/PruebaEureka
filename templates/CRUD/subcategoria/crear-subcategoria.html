@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block container %}
+    <div class="animate__animated animate__zoomIn">
+        <h1>Crear Subcategoria</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <select class="form-select" name="categoria" id="categoria" required>
+                {% if categorias.error %}
+                    <option disabled selected>{{categorias.nombre}}</option>
+                {% else %}
+                    <option disabled>--Seleccionar--</option>
+                    {% for categoria in categorias %}
+                        <option value="{{categoria.id}}">{{categoria.nombre}}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input 
+                    class="form-control" 
+                    type="text" 
+                    name="nombre" 
+                    id="nombre"
+                    value="{% if nombre %}{{nombre}}{% endif %}"
+                    required
+                >
+            </div>
+            <div class="form-group">
+                <label for="descr">Descripcion:</label>
+                <textarea 
+                    class="form-control" 
+                    type="text" 
+                    name="descr" 
+                    id="descr"
+                    required
+                >{% if descripcion %}{{descripcion}}{% endif %}</textarea>
+            </div>
+            <div class="form-group">
+                <input class="form-control btn btn-primary mt-2" type="submit" value="Crear Subcategoria" {% if categorias.error or errorDB %}disabled{% endif %}>
+            </div>
+        </form>
+
+        {% if error %}
+            {% for e in error%}
+                <p class="alert alert-danger mt-2">{{e}}</p>
+            {% endfor %}
+        {% endif %}
+        {% if errorDB %}
+            <p class="alert alert-danger mt-2">{{errorDB}}</p>
+        {% endif %}
+    </div>
+{% endblock %}
