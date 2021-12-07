@@ -56,5 +56,6 @@ def signup_view(request):
             return render(request,'usuarios/login.html')
         except IntegrityError:
             return render(request,'usuarios/signup.html',{'error': 'Usuario ya existente'})
-
+        except:
+            return render(request,'usuarios/signup.html',{'error': 'Error, vuelva intentar mas tarde'})
     return render(request,'usuarios/signup.html') 

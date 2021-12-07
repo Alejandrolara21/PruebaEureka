@@ -98,6 +98,17 @@ function crearHtmlDAtos({id,nombre,descripcion,precio,cantidad,imagen,subcategor
     divCard.classList.add('animate__fadeInUp');
 
     // Div opciones
+    const divHeader = document.createElement('DIV');
+    divHeader.classList.add('producto__header');
+
+    const divCategoria = document.createElement('DIV');
+    divCategoria.classList.add('producto__categoria');
+
+    const textSubcategoria = document.createElement('H3');
+    textSubcategoria.textContent = `${subcategoria}`;
+    divCategoria.appendChild(textSubcategoria);
+    divHeader.appendChild(divCategoria);
+
     const divOpciones = document.createElement('DIV');
     divOpciones.classList.add('producto__opciones');
 
@@ -129,6 +140,7 @@ function crearHtmlDAtos({id,nombre,descripcion,precio,cantidad,imagen,subcategor
     divOpciones.appendChild(divOpcionEditar);
     divOpciones.appendChild(divOpcionEliminar);
 
+    divHeader.appendChild(divOpciones);
     // Div Body
     const divBody = document.createElement('DIV');
     divBody.classList.add('producto__body');
@@ -145,7 +157,7 @@ function crearHtmlDAtos({id,nombre,descripcion,precio,cantidad,imagen,subcategor
     divText.classList.add('producto__text');
 
     const h2 = document.createElement('H2');
-    h2.textContent = `${nombre} - ${subcategoria}`;
+    h2.textContent = `${nombre}`;
     
     const pDescripcion = document.createElement('P');
     pDescripcion.textContent = `Descripcion: ${descripcion}`;
@@ -166,7 +178,7 @@ function crearHtmlDAtos({id,nombre,descripcion,precio,cantidad,imagen,subcategor
 
 
     // Div card
-    divCard.appendChild(divOpciones);
+    divCard.appendChild(divHeader);
     divCard.appendChild(divBody);
 
     return divCard;

@@ -111,8 +111,6 @@ def editar_view(request,pk):
         cantidad = request.POST['cantidad']
         idSubcategoria = request.POST['subcategoria']
 
-        subcategoria = Subcategoria.objects.get(pk=idSubcategoria)
-
         errores = []
 
         if(len(nombre)> 100):
@@ -122,18 +120,22 @@ def editar_view(request,pk):
             errores.append("Numero no valido")
 
         if(len(errores) > 0):
-            data={
-                'nombre':nombre,
-                'descripcion':descripcion,
-                'precio':precio,
-                'cantidad':cantidad,
-                'subcategorias':subcategorias,
-                'error': errores
-            }
-            return render(request,'CRUD/productos/crear-producto.html',data)
+            try:
+                producto = Producto.objects.get(pk=pk)
+                data={
+                    'producto':producto,
+                    'subcategorias':subcategorias,
+                    'error': errores
+                }
+            except:
+                data={
+                    'errorDB': "Error en la base de datos"
+                }
+            return render(request,'CRUD/productos/editar-producto.html',data)
 
         try:
             producto = Producto.objects.get(pk=pk)
+            subcategoria = Subcategoria.objects.get(pk=idSubcategoria)
             if(request.FILES):
                 file_path = f'{settings.MEDIA_ROOT}/{producto.imagen}'
                 if os.path.isfile(file_path):

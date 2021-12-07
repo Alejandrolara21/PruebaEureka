@@ -76,10 +76,15 @@ def editar_view(request,pk):
             errores.append("Nombre demasiado largo")
 
         if(len(errores) > 0):
-            data={
-                'nombre':nombre,
-                'error': errores
-            }
+            try:
+                data={
+                    'categoria':Categoria.objects.get(pk=pk),
+                    'error': errores
+                }
+            except:
+                data={
+                    'errorDB': "Error en la base de datos"
+                }
             return render(request,'CRUD/categoria/editar-categoria.html',data)
 
         try:

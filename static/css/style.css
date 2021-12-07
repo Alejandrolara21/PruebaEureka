@@ -2,11 +2,24 @@
     max-width: 1200px;
     margin: 0 auto;
     width: 95%;
+    margin-bottom: 2rem;
+}
+
+#navbar{
+    background-color: #49C6E5;
+    color: white;
+}
+
+input[type="submit"]{
+    background-color: #49C6E5;
+    border: none;
 }
 
 .producto__img img{
-    max-width: 200px;
-    max-height: 200px;
+    width: 100%;
+    height: 100%;
+    max-width: 10rem;
+    max-height: 10rem;
 }
 
 .grid__productos div{
@@ -30,6 +43,13 @@
     border: 1px solid gray;
     border-radius: 20px;
     padding: 1rem;
+    max-width: 50rem;
+}
+
+.producto__header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .producto__opciones{
@@ -48,11 +68,37 @@
     align-items: center;
 }
 
-@media (min-width: 390px) {
+.producto__text{
+    min-height: 50px;
+    max-width: 15rem;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+@media (min-width: 460px) {
     .producto__body{
         flex-direction: row;
-        justify-content: center;
+        justify-content: space-evenly;
         align-items: center;
-        gap: 10px;
+        gap: 1rem;
+    }
+
+    .producto__text{
+        min-height: 50px;
+        max-width: 20rem;
+        word-wrap: break-word;
     }
   }
+
+.imagen_formulario{
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imagen_formulario img{
+    max-width: 20rem;
+    max-height: 20rem;
+}

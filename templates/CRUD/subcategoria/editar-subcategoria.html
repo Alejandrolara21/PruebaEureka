@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block container %}
-    <div class="animate__animated animate__zoomIn">
+    <div class="animate__animated animate__zoomIn contenedor">
         <h1>Editar Subcategoria</h1>
         <form method="POST">
             {% csrf_token %}
@@ -22,7 +22,8 @@
                     type="text" 
                     name="nombre" 
                     id="nombre"
-                    value="{% if nombre %}{{nombre}}{% endif %}"
+                    value="{% if subcategoria %}{{subcategoria.nombre}}{% endif %}"
+                    autoComplete="off"
                     required
                 >
             </div>
@@ -33,8 +34,9 @@
                     type="text" 
                     name="descr" 
                     id="descr"
+                    autoComplete="off"
                     required
-                >{% if descripcion %}{{descripcion}}{% endif %}</textarea>
+                >{% if subcategoria %}{{subcategoria.descripcion}}{% endif %}</textarea>
             </div>
             <div class="form-group">
                 <input class="form-control btn btn-primary mt-2" type="submit" value="Actualizar Subcategoria" {% if categorias.error or errorDB %}disabled{% endif %}>

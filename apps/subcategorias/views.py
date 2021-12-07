@@ -58,7 +58,6 @@ def crear_view(request):
             }
     return render(request,'CRUD/subcategoria/crear-subcategoria.html',data)
 
-
 @login_required
 def listado_view(request):
     try:
@@ -71,6 +70,29 @@ def listado_view(request):
             'errorDB': "Error en la base de datos"
         }
     return render(request,'CRUD/subcategoria/listado-subcategoria.html',data)
+
+@login_required
+def listadoCantProd_view(request):
+    try:
+        subcategorias = Subcategoria.objects.all()
+        data = {}
+        data['subcategorias'] = []
+
+        for subcategoria in subcategorias:
+            productos = Producto.objects.filter(subcategoria=subcategoria)
+            arreglo_json = {
+                'id': f'{subcategoria.id}',
+                'nombre': f'{subcategoria.nombre}',
+                'categoria': f'{subcategoria.categoria}',
+                'productos':f'{len(productos)}'
+            }
+
+            data['subcategorias'].append(arreglo_json)
+    except:
+        data={
+            'errorDB': "Error en la base de datos"
+        }
+    return render(request,'CRUD/subcategoria/listado-cantidad-productos.html',data)
 
 
 @login_required
@@ -100,12 +122,17 @@ def editar_view(request,pk):
             errores.append("Nombre demasiado largo")
 
         if(len(errores) > 0):
-            data={
-                'nombre':nombre,
-                'descripcion': descripcion,
-                'error': errores,
-                'categorias': categorias
-            }
+            try:
+                categorias = Categoria.objects.all()
+                data ={
+                    'subcategoria':Subcategoria.objects.get(pk=pk),
+                    'categorias': categorias,
+                    'error':errores
+                }
+            except:
+                data={
+                    'errorDB': "Error en la base de datos"
+                }
             return render(request,'CRUD/subcategoria/editar-subcategoria.html',data)
 
         try:

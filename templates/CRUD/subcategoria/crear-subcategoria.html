@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block container %}
-    <div class="animate__animated animate__zoomIn">
+    <div class="animate__animated animate__zoomIn contenedor">
         <h1>Crear Subcategoria</h1>
         <form method="POST">
             {% csrf_token %}
@@ -23,6 +23,7 @@
                     name="nombre" 
                     id="nombre"
                     value="{% if nombre %}{{nombre}}{% endif %}"
+                    autoComplete="off"
                     required
                 >
             </div>
@@ -33,6 +34,7 @@
                     type="text" 
                     name="descr" 
                     id="descr"
+                    autoComplete="off"
                     required
                 >{% if descripcion %}{{descripcion}}{% endif %}</textarea>
             </div>

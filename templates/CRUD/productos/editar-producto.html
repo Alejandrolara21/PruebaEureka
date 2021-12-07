@@ -1,8 +1,17 @@
 {% extends "layout.html" %}
 
 {% block container %}
-    <div class="animate__animated animate__zoomIn">
+    {% load static %}
+    <div class="animate__animated animate__zoomIn contenedor">
         <h1>Editar Producto</h1>
+        {% if error %}
+            {% for e in error%}
+                <p class="alert alert-danger mt-2">{{e}}</p>
+            {% endfor %}
+        {% endif %}
+        {% if errorDB %}
+            <p class="alert alert-danger mt-2">{{errorDB}}</p>
+        {% endif %}
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <select class="form-select" name="subcategoria" id="subcategoria">
@@ -22,6 +31,8 @@
                     name="nombre" 
                     id="nombre"
                     value="{% if producto %}{{producto.nombre}}{% endif %}"
+                    autoComplete="off"
+                    required
                 >
             </div>
             <div class="form-group">
@@ -32,6 +43,8 @@
                     name="precio" 
                     id="precio"
                     value="{% if producto %}{{producto.precio}}{% endif %}"
+                    autoComplete="off"
+                    required
                 >
             </div>
             <div class="form-group">
@@ -42,6 +55,8 @@
                     name="cantidad" 
                     id="cantidad"
                     value="{% if producto %}{{producto.cantidad}}{% endif %}"
+                    autoComplete="off"
+                    required
                 >
             </div>
             <div class="form-group">
@@ -51,24 +66,19 @@
                     type="text" 
                     name="descr" 
                     id="descr"
-                    value=""
+                    autoComplete="off"
+                    required
                 >{% if producto %}{{producto.descripcion}}{% endif %}</textarea>
             </div>
             <div class="form-group">
                 <input class="form-control mt-2" type="file" id="imagen" name="imagen">
             </div>
+            <div class="imagen_formulario">
+                <img src="{% if producto.imagen %}/media/{{producto.imagen}}{% else %}{% static "img/logo.png"%}{%endif%}" alt="Imagen {{producto.nombre}}">
+            </div>
             <div class="form-group">
-                <input class="form-control btn btn-primary mt-2" type="submit" value="Editar Producto" {% if subcategorias.error or errorDB %}disabled{% endif %}>
+                <input class="form-control btn btn-primary mt-2 mb-4" type="submit" value="Editar Producto" {% if subcategorias.error or errorDB %}disabled{% endif %}>
             </div>
         </form>
-
-        {% if error %}
-            {% for e in error%}
-                <p class="alert alert-danger mt-2">{{e}}</p>
-            {% endfor %}
-        {% endif %}
-        {% if errorDB %}
-            <p class="alert alert-danger mt-2">{{errorDB}}</p>
-        {% endif %}
     </div>
 {% endblock %}

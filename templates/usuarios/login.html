@@ -1,22 +1,32 @@
 {% extends "usuarios/base.html"%}
 
 {% block container %}
-    <form method="POST" action={% url "login_usuario" %}>
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="correo">Correo:</label>
-            <input class="form-control" type="text" name="correo" id="correo">
+    <div>
+        <h1 class="auth__title">Login</h1>
+        {% if error %}
+            <p id="error" class="alert alert-danger mt-2">{{error}}</p>
+        {% endif %}
+        <form class="auth__formulario" method="POST" action={% url "login_usuario" %}>
+            {% csrf_token %}
+            <label class="auth__label" for="correo">Email</label>
+            <input 
+                class="auth__input" 
+                type="email" 
+                name="correo"
+                autoComplete="off"
+            />
+            <label class="auth__label" for="password">Password</label>
+            <input class="auth__input" type="password" name="password"/>
+            <input class="auth__submit pointer" type="submit" value="Iniciar Sesion"/>
+        </form>
+        <hr />
+        <div className="auth__texto center">
+            <a
+                class="link center"
+                href={% url "signup_usuario" %}
+            >
+                Crear nueva cuenta
+            </a>
         </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input class="form-control" type="password" name="password" id="password">
-        </div>
-        <div class="form-group">
-            <input class="form-control btn btn-primary mt-2" type="submit" value="Iniciar Sesion">
-        </div>
-    </form>
-
-    {% if error %}
-    <p class="alert alert-danger mt-2">{{error}}</p>
-    {% endif %}
+    </div>
 {% endblock %}

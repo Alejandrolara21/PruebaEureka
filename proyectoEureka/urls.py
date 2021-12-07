@@ -43,6 +43,7 @@ urlpatterns = [
     #Menu Subcategoria
     path('subcategoria/crear/',subcategorias_views.crear_view,name="crear_subcategoria"),
     path('subcategoria/listado/',subcategorias_views.listado_view,name="listado_subcategoria"),
+    path('subcategoria/listado/productos/',subcategorias_views.listadoCantProd_view,name="listado_cant_productos"),
     path('subcategoria/editar/<int:pk>/',subcategorias_views.editar_view,name="editar_subcategoria"),
     path('subcategoria/eliminar/<int:pk>/',subcategorias_views.eliminar_view,name="eliminar_subcategoria"),
     path('subcategoria/listadoJson/',subcategorias_views.listadoJson_view,name="listadoJson_subcategoria"),
