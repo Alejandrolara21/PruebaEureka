@@ -41,7 +41,7 @@ function eliminarCategoria(){
             icono.addEventListener('click', e =>{
                 e.preventDefault();
                 id = icono.dataset.eliminar;
-                url = `http://127.0.0.1:8000/categoria/eliminar/${id}/`
+                url = `http://localhost:8000/categoria/eliminar/${id}/`
                 fetch(url,{
                     method: 'GET',
                     headers: {},
@@ -65,7 +65,7 @@ function eliminarCategoria(){
 
 async function cargarlistado(mensaje,tipo){
     try {
-        url = "http://127.0.0.1:8000/categoria/listadoJson/";
+        url = "http://localhost:8000/categoria/listadoJson/";
         const resultado = await fetch(url);
         const datos = await resultado.json();
         //Evitar error
